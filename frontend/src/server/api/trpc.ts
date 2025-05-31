@@ -2,13 +2,19 @@ import type { IdTokenClaims } from "@logto/client";
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { LogtoClient } from "../LogToClient";
 
 export type CreateContextOptions = {
   idToken?: IdTokenClaims;
+  logto: {
+    clientId: string;
+    clientSecret: string;
+  };
 };
 
 type context = (opts: CreateContextOptions) => Promise<{
   idToken?: IdTokenClaims;
+  logto: LogtoClient;
 }>;
 
 const t = initTRPC.context<context>().create({
@@ -26,9 +32,6 @@ const t = initTRPC.context<context>().create({
   },
 });
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
-  console.log("middleware");
-  console.log(ctx.idToken);
-  console.log("middleware");
   if (ctx.idToken) {
     return next();
   }
