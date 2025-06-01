@@ -42,12 +42,19 @@ import { Trash2, Plus, Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/app/trpc/rq-client";
 
+const currentDate = new Date(); // Month is 0-indexed (5 = June)
+function getFutureTimestamp(days: number) {
+  const futureDate = new Date(currentDate.getTime()); // Create a copy
+  futureDate.setDate(currentDate.getDate() + days);
+  return futureDate.getTime(); // Returns epoch time in milliseconds
+}
+
 const EXPIRATION_OPTIONS = [
-  { value: "7d", label: "7 days" },
-  { value: "30d", label: "30 days" },
-  { value: "180d", label: "180 days" },
-  { value: "365d", label: "365 days" },
-  { value: "never", label: "Never" },
+  { value: getFutureTimestamp(7), label: "7 days" },
+  { value: getFutureTimestamp(30), label: "30 days" },
+  { value: getFutureTimestamp(180), label: "180 days" },
+  { value: getFutureTimestamp(365), label: "365 days" },
+  { value: -1, label: "Never" },
 ];
 
 export default function Component() {
@@ -71,7 +78,7 @@ export default function Component() {
 
     setIsCreating(true);
     createToken.mutate(
-      { name: newTokenName },
+      { name: newTokenName, expiresAt: parseInt(newTokenExpiration) },
       {
         onSuccess: function () {
           utils.invalidate();

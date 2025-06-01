@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const patRouter = createTRPCRouter({
   createPat: protectedProcedure
-    .input(z.object({ name: z.string() }))
+    .input(z.object({ name: z.string(), expiresAt: z.number() }))
 
     .mutation(async ({ ctx, input }) => {
       const token = await ctx.logto.getAccessToken(
@@ -13,6 +13,7 @@ export const patRouter = createTRPCRouter({
       await ctx.logto.createPersonalAccessToken(
         ctx.idToken!.sub,
         {
+          expiresAt: input.expiresAt == -1 ? undefined : input.expiresAt,
           name: input.name,
         },
         token.access_token,

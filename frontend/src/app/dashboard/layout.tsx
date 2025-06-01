@@ -10,9 +10,10 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { isAuthenticated } = await getLogtoContext(logtoConfig);
+  const ctx = await getLogtoContext(logtoConfig);
+  console.log(ctx.userInfo);
 
-  if (!isAuthenticated) {
+  if (!ctx.isAuthenticated) {
     return redirect("/");
   }
 
@@ -26,7 +27,14 @@ export default async function Layout({
           } as React.CSSProperties
         }
       >
-        <AppSidebar variant="inset" />
+        <AppSidebar
+          variant="inset"
+          user={{
+            name: ctx.claims?.name ?? "",
+            email: ctx.claims?.email ?? "",
+            avatar: ctx.claims?.picture ?? "",
+          }}
+        />
         <SidebarInset>{children}</SidebarInset>
       </SidebarProvider>
     </TRPCReactProvider>

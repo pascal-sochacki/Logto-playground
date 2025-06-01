@@ -1,4 +1,4 @@
-import { LogtoConfig } from "@logto/client";
+import { LogtoConfig, UserScope } from "@logto/client";
 
 export const logtoConfig: LogtoConfig & {
   baseUrl: string;
@@ -11,6 +11,12 @@ export const logtoConfig: LogtoConfig & {
   baseUrl: "http://localhost:3000", // Change to your own base URL
   cookieSecret: "DJOp9zz1X8i4fnTnN45P2wS7OzsWVLIr", // Auto-generated 32 digit secret
   resources: ["https://backend"],
-  scopes: ["read:generic_data"],
+  scopes: [
+    "read:generic_data",
+    "openid",
+    "profile",
+    "offline_access",
+    UserScope.Email,
+  ],
   cookieSecure: process.env.NODE_ENV === "production",
 };
