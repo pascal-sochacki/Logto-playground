@@ -36,7 +36,7 @@ export class LogtoClient {
 
   async getAccessToken(
     resource: string, // e.g., `https://[tenant_id].logto.app/api`
-    scope: string = "all",
+    scope: string = "read:data",
   ): Promise<AccessTokenResponse> {
     try {
       const tokenEndpoint = `${this.apiBaseUrl}/oidc/token`;
