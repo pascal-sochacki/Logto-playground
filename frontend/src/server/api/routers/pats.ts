@@ -8,6 +8,7 @@ export const patRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const token = await ctx.logto.getAccessToken(
         "https://default.logto.app/api",
+        "all",
       );
       await ctx.logto.createPersonalAccessToken(
         ctx.idToken!.sub,
@@ -32,6 +33,7 @@ export const patRouter = createTRPCRouter({
     .query(async ({ ctx }) => {
       const token = await ctx.logto.getAccessToken(
         "https://default.logto.app/api",
+        "all",
       );
       const pats = await ctx.logto.listPersonalAccessTokens(
         ctx.idToken!.sub,
@@ -52,6 +54,7 @@ export const patRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const token = await ctx.logto.getAccessToken(
         "https://default.logto.app/api",
+        "all",
       );
       await ctx.logto.deletePersonalAccessToken(
         ctx.idToken!.sub,

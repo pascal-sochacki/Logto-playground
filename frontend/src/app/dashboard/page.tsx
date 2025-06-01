@@ -1,11 +1,14 @@
+"use client";
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { DataTable } from "@/components/data-table";
 import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
 
 import data from "./data.json";
+import { api } from "../trpc/rq-client";
 
 export default function Page() {
+  const d = api.data.getData.useQuery();
   return (
     <>
       <SiteHeader />
@@ -16,6 +19,7 @@ export default function Page() {
             <div className="px-4 lg:px-6">
               <ChartAreaInteractive />
             </div>
+            <div>{JSON.stringify(d.data)}</div>
             <DataTable data={data} />
           </div>
         </div>
